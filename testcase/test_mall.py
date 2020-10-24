@@ -3,7 +3,10 @@ from utils.RequsetsUtil import requests_get
 from utils.RequsetsUtil import requests_post
 from utils.RequsetsUtil import Request
 from config.Conf import ConfigYaml
+from utils.AssertUtil import AssertUtil
+from common.Base import init_db
 import pytest
+import json
 
 conf = ConfigYaml()
 url_add = conf.get_conf_url()
@@ -19,6 +22,19 @@ def testlogin():
     req=Request()
     r=req.post(url,json=data)
     print(r)
+    code = r["code"]
+    #assert code == 200
+    AssertUtil().assert_code(code,200)
+    #返回结果内容
+    #body = json.dumps(r["body"])
+    body = r["body"]
+    #assert '"user_id": 1, "username": "python"' in body
+    AssertUtil().assert_in_body(body,'"user_id": 1, "username": "python"')
+    conn=init_db("db_1")
+    res_db=conn.fetchone("select id,username from tb_users where username='python'")
+    print("数据库%s"%res_db)
+    user_id =body["user_id"]
+    assert user_id ==res_db["id"]
 
 def testinfo():
     url = url_add+"/user/"
