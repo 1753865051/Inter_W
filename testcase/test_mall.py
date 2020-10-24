@@ -3,10 +3,11 @@ from utils.RequsetsUtil import requests_get
 from utils.RequsetsUtil import requests_post
 from utils.RequsetsUtil import Request
 from config.Conf import ConfigYaml
+import pytest
 
 conf = ConfigYaml()
 url_add = conf.get_conf_url()
-def login():
+def testlogin():
 
 
     url=url_add+"/authorizations/"
@@ -19,7 +20,7 @@ def login():
     r=req.post(url,json=data)
     print(r)
 
-def info():
+def testinfo():
     url = url_add+"/user/"
     token="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoxLCJlbWFpbCI6Ijk1MjY3MzYzOEBxcS5jb20iLCJ1c2VybmFtZSI6InB5dGhvbiIsImV4cCI6MTYwMzUyNTgwNX0.nI8SyizGPhgGw1i-V-KgXSdB_7TNkL90eDJCemaSlp8"
     headers={
@@ -64,8 +65,9 @@ def order():
     r = requests.post(url, json=data, headers=headers)
     print(r.json())
 if __name__ == '__main__':
-    login()
-    info()
-    goods_list()
-    cart()
-    order()
+    # login()
+    # info()
+    # goods_list()
+    # cart()
+    # order()
+    pytest.main(["-s"])
